@@ -63,15 +63,6 @@ export interface Skill {
   name: string;
   icon: string; // Icon name from react-icons
 }
-
-export const skills: Skill[] = [
-  { name: "React", icon: "FaReact" },
-  { name: "TypeScript", icon: "SiTypescript" },
-  { name: "Tailwind CSS", icon: "SiTailwindcss" },
-  { name: "Framer Motion", icon: "SiFramer" },
-  // Add more skills here
-];
-
 export const aboutMe = `I'm passionate about MERN stack development and continuously expanding my knowledge. Currently pursuing studies in grade 3. Proficient in creating full-stack web applications using MongoDB, Express.js, React, and Node.js. Expertise in front-end and back-end development. Solid foundation in JavaScript and responsive design. Committed to staying up-to-date with latest technological advancements. Actively enhances problem-solving skills and technical proficiency through new projects. Thrives in collaborative environments. Eager to contribute to innovative development teams.\n\nI am currently working remotely, focusing on my personal projects and freelance work. I am open to opportunities to collaborate with other developers and teams. My goal is to contribute to the development of cutting-edge technologies and help clients achieve their goals.`;
 
 export const workExperience = [
@@ -110,6 +101,15 @@ export const certifications = [
     link: "https://coursera.org/share/6701eba45b7d71f0c147767121da7ccd"
   }
 ];
+
+export const skills: Skill[] = [
+  { name: "React", icon: "FaReact" },
+  { name: "TypeScript", icon: "SiTypescript" },
+  { name: "Tailwind CSS", icon: "SiTailwindcss" },
+  { name: "Framer Motion", icon: "SiFramer" },
+  // Add more skills here
+];
+
 
 export const skillsList = [
   "ReactJS", "Tailwind" ,"HTML5", "CSS3", "JavaScript", "NodeJS", "MongoDB", "Python", "Redux", "Bootstrap", "ExpressJS", "Git", "REST API", "C++", "Java"
