@@ -43,7 +43,13 @@ function Aside() {
           <a href={userInfo.socialLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="hover:text-green-400 text-2xl transition-colors" title="WhatsApp"><FaWhatsapp /></a>
         </motion.div>
       </div>
-      <div className="mt-8 space-y-5 bg-gray-800/70 rounded-2xl p-5 shadow-inner">
+      <motion.div
+        className="mt-8 space-y-5 bg-gray-800/70 rounded-2xl p-5 shadow-inner z-10 relative"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.7 }}
+        style={{ pointerEvents: 'auto' }}
+      >
         <div className="flex items-center gap-3 text-gray-200 text-base">
           <FaMobileAlt className="text-blue-400" />
           <span className="font-semibold">Phone:</span>
@@ -64,7 +70,7 @@ function Aside() {
           <span className="font-semibold">Birthday:</span>
           <span>{userInfo.birthday}</span>
         </div>
-      </div>
+      </motion.div>
       <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-800/30 rounded-full blur-2xl z-0"></div>
       <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl z-0"></div>
     </aside>
