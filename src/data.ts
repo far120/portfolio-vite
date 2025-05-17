@@ -14,7 +14,7 @@ export const projects: Project[] = [
     description: "the Group of Tasks is a productivity app that is whither , gpaculclator amirican ,curancy , todos , movies app , series app , Dice Roller .",
     iframe: "https://groupof-tasks.vercel.app/",
     github: "https://github.com/far120/groupof-tasks", // Replace with the actual GitHub URL if available
-    demo: "https://groupof-tasks-qlufnhofx-mostafa-s-projects-3ce2645e.vercel.app/",
+    demo: "https://groupof-tasks.vercel.app/",
     tags: ["React", "API", "Tailwind"  , "Weather" ,  "Productivity", "Calculator", "Currency Converter", "To-Do List", "Movies App", "Series App", "Dice Roller"],
   },
   {
