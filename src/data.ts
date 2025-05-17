@@ -18,6 +18,22 @@ export const projects: Project[] = [
     tags: ["React", "API", "Tailwind"  , "Weather" ,  "Productivity", "Calculator", "Currency Converter", "To-Do List", "Movies App", "Series App", "Dice Roller"],
   },
   {
+    title: "Crud Prouduct App",
+    description: "A CRUD application for managing products with a user-friendly interface.",
+    iframe: "https://product-builder-project-eta.vercel.app/",
+    github: "https://github.com/far120/product-builder-project",
+    demo: "https://product-builder-project-eta.vercel.app/",
+    tags: ["React", "CRUD", "Product Management"],
+  },
+   {
+    title: "Show Prouduct App",
+    description: "Show Prouduct App is a simple and effective product management tool.",
+    iframe: "https://show-product.vercel.app/",
+    github: "https://github.com/far120/show-product",
+    demo: "https://show-product.vercel.app/",
+    tags: ["React", "Api", "Product Management"],
+  },
+  {
     title: "E-commerce Platform Using MERN Stack",
     description: "A full-featured e-commerce platform with product management, cart, and checkout, built using the MERN stack.",
     iframe: "https://full-stack-prouduct.vercel.app/",

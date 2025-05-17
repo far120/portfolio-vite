@@ -42,7 +42,7 @@ function App() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="relative bg-gradient-to-br from-gray-900/80 to-blue-900/60 rounded-2xl shadow-xl p-8 border border-blue-700/30 text-gray-200 text-lg mb-6 overflow-hidden"
+              className="relative bg-gradient-to-br from-gray-900/80 to-blue-900/60 rounded-2xl shadow-xl p-8 border border-blue-700/30 text-gray-200 text-lg mb-6 overflow-hidden hover:scale-[1.025] transition-transform"
             >
               <span className="absolute -top-6 -left-6 w-24 h-24 bg-blue-700/20 rounded-full blur-2xl z-0"></span>
               <span className="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-400/10 rounded-full blur-2xl z-0"></span>
