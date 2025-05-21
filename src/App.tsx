@@ -217,7 +217,16 @@ function App() {
           )}
         </section>
       </main>
-      <footer className="text-center py-6 text-gray-400">&copy; {new Date().getFullYear()} Mostafa EL_FAR. All rights reserved.</footer>
+      <footer className="text-center py-8 px-2 bg-gradient-to-r from-blue-900/90 via-cyan-900/80 to-blue-900/90 text-cyan-200 font-semibold tracking-wide shadow-inner border-t-2 border-cyan-400 mt-12 rounded-b-2xl relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <span className="absolute left-1/4 top-0 w-32 h-32 bg-cyan-400/10 rounded-full blur-2xl animate-pulse"></span>
+          <span className="absolute right-1/4 bottom-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl animate-pulse"></span>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10">
+          <span className="text-lg sm:text-xl drop-shadow">&copy; {new Date().getFullYear()} <span className="font-bold text-cyan-400">Mostafa EL_FAR</span>. All rights reserved.</span>
+          <span className="hidden sm:inline-block text-cyan-400 text-2xl animate-bounce">🚀</span>
+        </div>
+      </footer>
     </div>
   );
 }
