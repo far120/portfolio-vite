@@ -13,5 +13,6 @@ export const userInfo = {
     linkedin: "https://www.linkedin.com/in/mostafa-mahmoud-el-far-6a67732b5/",
     whatsapp: "https://wa.me/+201102453675",
   },
-  image: "./profile.jpg"
+  // image: "./profile.jpg"
+  image: "./pro.jpg"
 };
