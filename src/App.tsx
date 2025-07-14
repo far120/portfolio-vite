@@ -1,11 +1,11 @@
 import { projects, skills, aboutMe, workExperience, certifications, skillsList, projectDetails } from "./data";
-import { FaGithub, FaCode, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaGithub, FaCode, FaChevronDown, FaChevronUp, FaUser, FaBriefcase, FaProjectDiagram, FaCertificate, FaTools, FaExternalLinkAlt, FaCopy, FaCheck } from "react-icons/fa";
 import * as FaIcons from "react-icons/fa";
 import * as SiIcons from "react-icons/si";
 import type { IconType } from 'react-icons';
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Aside from "./Aside";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Helper to get icon by name safely
 function getIconByName(name: string): IconType {
@@ -19,214 +19,610 @@ function App() {
   const [showProjects, setShowProjects] = useState(false);
   const [showSkills, setShowSkills] = useState(false);
   const [showCerts, setShowCerts] = useState(false);
+  const [copiedCredentials, setCopiedCredentials] = useState<'email' | 'password' | null>(null);
+  const [loadingProjects, setLoadingProjects] = useState<string[]>([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Track scroll progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Enhanced copy to clipboard functionality
+  const copyToClipboard = async (text: string, type: 'email' | 'password') => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedCredentials(type);
+      setTimeout(() => setCopiedCredentials(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // Handle external link loading states
+  const handleLinkClick = (url: string, projectTitle: string) => {
+    setLoadingProjects(prev => [...prev, projectTitle]);
+    window.open(url, '_blank');
+    setTimeout(() => {
+      setLoadingProjects(prev => prev.filter(p => p !== projectTitle));
+    }, 2000);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-gray-900 to-blue-900 text-white font-sans">
-      <header className="py-8 text-center bg-gradient-to-b from-blue-900/80 via-blue-800/60 to-transparent relative">
-        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-700 animate-pulse z-20"></div>
-        <Aside />
-        <motion.h1 initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold mb-2 text-blue-100 drop-shadow-xl tracking-tight font-[Montserrat] break-words leading-tight">Mostafa Mahmoud Hosni <span className="inline-block align-middle ml-2 text-cyan-400 animate-bounce">🚀</span></motion.h1>
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.7 }} className="text-base sm:text-lg md:text-2xl text-cyan-200 font-semibold mt-2 mb-4 tracking-wide px-2">Full Stack Developer <span className="text-cyan-400">|</span> React <span className="text-cyan-400">|</span> TypeScript <span className="text-cyan-400">|</span> Node.js</motion.p>
-        <div className="flex justify-center gap-2 sm:gap-4 mt-4 flex-wrap">
-          <span className="inline-block w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full animate-pulse"></span>
-          <span className="inline-block w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full animate-pulse"></span>
-          <span className="inline-block w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full animate-pulse"></span>
-          <span className="inline-block w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full animate-pulse"></span>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white font-sans">
+      {/* Hero Section */}
+      <Aside />
+
+      {/* Main Content */}
+      <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        {/* Animated background elements */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute top-40 left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
         </div>
-      </header>
-      <main className="max-w-5xl mx-auto px-2 sm:px-4">
-        <section className="mb-12">
-          <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between mb-6 bg-gradient-to-r from-blue-900/60 via-transparent to-blue-900/60 rounded-t-xl px-2 sm:px-4 py-2 shadow-lg gap-2 sm:gap-0">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold border-b-2 border-cyan-400 pb-2 text-blue-100 uppercase tracking-widest drop-shadow-lg flex items-center gap-2">About Me <span className="text-cyan-400">★</span></h2>
-            <button onClick={() => setShowAbout(v => !v)} className="ml-0 sm:ml-4 px-3 sm:px-4 py-1 rounded-lg bg-blue-700/60 hover:bg-blue-500/80 text-white font-semibold shadow transition flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              {showAbout ? <FaChevronUp /> : <FaChevronDown />} {showAbout ? 'Hide' : 'Show'}
-            </button>
-          </div>
-          {showAbout && (
+
+        <main className="max-w-6xl mx-auto px-4 py-16 relative z-10">
+          {/* About Me Section */}
+          <section className="mb-16">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="relative bg-gradient-to-br from-gray-900/80 to-blue-900/60 rounded-2xl shadow-xl p-8 border border-blue-700/30 text-gray-200 text-lg mb-6 overflow-hidden hover:scale-[1.025] transition-transform"
+              className="group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
             >
-              <span className="absolute -top-6 -left-6 w-24 h-24 bg-blue-700/20 rounded-full blur-2xl z-0"></span>
-              <span className="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-400/10 rounded-full blur-2xl z-0"></span>
-              <span className="absolute inset-0 bg-gradient-to-br from-blue-800/10 to-transparent rounded-2xl pointer-events-none z-0"></span>
-              <span className="absolute top-4 right-8 text-blue-400 text-3xl opacity-20 select-none z-0">&#10077;</span>
-              <span className="absolute bottom-4 left-8 text-blue-400 text-3xl opacity-20 select-none z-0">&#10078;</span>
-              <span className="relative z-10 whitespace-pre-line leading-relaxed font-medium drop-shadow">
-                {aboutMe}
-              </span>
+              <div
+                onClick={() => setShowAbout(v => !v)}
+                className="flex items-center justify-between mb-8 p-6 bg-gradient-to-r from-purple-900/50 via-slate-800/50 to-purple-900/50 rounded-2xl backdrop-blur-sm border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 shadow-xl hover:shadow-purple-500/20"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl shadow-lg">
+                    <FaUser className="text-xl text-white" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                    About Me
+                  </h2>
+                </div>
+                <motion.div
+                  animate={{ rotate: showAbout ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-lg"
+                >
+                  <FaChevronDown className="text-xl text-purple-300" />
+                </motion.div>
+              </div>
             </motion.div>
-          )}
-        </section>
-        <section className="mb-12">
-          <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between mb-6 bg-gradient-to-r from-blue-900/60 via-transparent to-blue-900/60 rounded-t-xl px-2 sm:px-4 py-2 shadow-lg gap-2 sm:gap-0">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold border-b-2 border-cyan-400 pb-2 text-blue-100 uppercase tracking-widest drop-shadow-lg flex items-center gap-2">Work Experience <span className="text-cyan-400">💼</span></h2>
-            <button onClick={() => setShowWork(v => !v)} className="ml-0 sm:ml-4 px-3 sm:px-4 py-1 rounded-lg bg-blue-700/60 hover:bg-blue-500/80 text-white font-semibold shadow transition flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              {showWork ? <FaChevronUp /> : <FaChevronDown />} {showWork ? 'Hide' : 'Show'}
-            </button>
-          </div>
-          {showWork && (
-            <div className="space-y-8">
-              {workExperience.map((exp, idx) => (
+
+            <AnimatePresence>
+              {showAbout && (
                 <motion.div
-                  key={exp.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.2, duration: 0.7 }}
-                  className="relative bg-gradient-to-br from-gray-900/80 to-blue-900/60 rounded-2xl shadow-xl p-8 border border-blue-700/30 overflow-hidden group hover:scale-[1.025] transition-transform"
+                  initial={{ opacity: 0, height: 0, y: -20 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="overflow-hidden"
                 >
-                  <span className="absolute -top-6 -left-6 w-24 h-24 bg-blue-700/20 rounded-full blur-2xl z-0"></span>
-                  <span className="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-400/10 rounded-full blur-2xl z-0"></span>
-                  <span className="absolute inset-0 bg-gradient-to-br from-blue-800/10 to-transparent rounded-2xl pointer-events-none z-0"></span>
-                  <div className="relative z-10">
-                    <h3 className="text-xl md:text-2xl font-bold mb-1 text-blue-200 drop-shadow-lg tracking-tight group-hover:text-blue-400 transition-colors">{exp.title}</h3>
-                    <div className="text-blue-300 text-sm mb-3 font-semibold flex flex-wrap gap-2 items-center">
-                      <span>{exp.duration}</span>
-                      <span className="mx-2 text-gray-400">|</span>
-                      <span>{exp.location}</span>
-                    </div>
-                    <ul className="list-disc list-inside text-blue-100/90 pl-4 space-y-1">
-                      {exp.details.map((d, i) => <li key={i} className="leading-relaxed">{d}</li>)}
-                    </ul>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </section>
-        <section className="mb-12">
-          <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between mb-6 bg-gradient-to-r from-blue-900/60 via-transparent to-blue-900/60 rounded-t-xl px-2 sm:px-4 py-2 shadow-lg gap-2 sm:gap-0">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold border-b-2 border-cyan-400 pb-2 text-blue-100 uppercase tracking-widest drop-shadow-lg flex items-center gap-2">Projects <span className="text-cyan-400">🛠️</span></h2>
-            <button onClick={() => setShowProjects(v => !v)} className="ml-0 sm:ml-4 px-3 sm:px-4 py-1 rounded-lg bg-blue-700/60 hover:bg-blue-500/80 text-white font-semibold shadow transition flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              {showProjects ? <FaChevronUp /> : <FaChevronDown />} {showProjects ? 'Hide' : 'Show'}
-            </button>
-          </div>
-          {showProjects && (
-            <div className="grid md:grid-cols-2 gap-8">
-              {projectDetails.map((project, idx) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.2 }}
-                  className="relative bg-gradient-to-br from-gray-900/80 to-blue-900/60 rounded-2xl shadow-2xl overflow-hidden hover:scale-[1.025] transition-transform flex flex-col border border-blue-700/30 group"
-                >
-                  <div className="w-full h-56 border-b-4 border-blue-500 bg-[#222] flex items-center justify-center relative overflow-hidden">
-                    {project.iframe ? (
-                      <iframe
-                        src={project.iframe}
-                        title={project.title}
-                        className="w-full h-full border-0 rounded-none"
-                        allow="fullscreen"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-500">No Preview</div>
-                    )}
-                    <span className="absolute -top-6 -left-6 w-24 h-24 bg-blue-700/20 rounded-full blur-2xl z-0"></span>
-                    <span className="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-400/10 rounded-full blur-2xl z-0"></span>
-                  </div>
-                  <div className="p-6 flex flex-col flex-1 justify-between relative z-10">
-                    <h3 className="text-2xl font-bold mb-2 text-blue-200 drop-shadow-lg group-hover:text-blue-400 transition-colors">{project.title}</h3>
-                    <p className="text-blue-200 mb-4 text-base leading-relaxed">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tags && project.tags.map(tag => (
-                        <span key={tag} className="bg-blue-700/80 text-xs px-3 py-1 rounded-full font-semibold tracking-wide text-blue-100 shadow">{tag}</span>
-                      ))}
-                    </div>
-                    <div className="flex gap-4 mt-auto">
-                      {project.github && (
-                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 flex items-center gap-1 font-semibold transition-colors">
-                          <FaGithub />Code
-                        </a>
-                      )}
-                      {project.demo && (
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer" className="hover:text-green-400 font-semibold transition-colors">Live Demo</a>
-                      )}
+                  <div className="bg-gradient-to-br from-slate-900/80 via-purple-900/30 to-slate-900/80 rounded-2xl p-8 backdrop-blur-sm border border-purple-500/20 shadow-2xl hover:shadow-purple-500/10 transition-all duration-300">
+                    <div className="relative">
+                      <div className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-full blur-xl"></div>
+                      <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-full blur-xl"></div>
+                      <p className="text-lg leading-relaxed text-slate-200 relative z-10 whitespace-pre-line">
+                        {aboutMe}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
-              ))}
-            </div>
-          )}
-          {showProjects && (
-            <div className="mt-6 text-sm text-blue-300 px-2 sm:px-0">
-              <h3 className="font-semibold">This is the email and password for any project demo:</h3>
-              <div>email: <span className="font-mono text-blue-100">user@user.com</span></div>
-              <div>password: <span className="font-mono text-blue-100">123456789</span></div>
-            </div>
-          )}
-        </section>
-        <section className="mb-12">
-          <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between mb-6 bg-gradient-to-r from-blue-900/60 via-transparent to-blue-900/60 rounded-t-xl px-2 sm:px-4 py-2 shadow-lg gap-2 sm:gap-0">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold border-b-2 border-cyan-400 pb-2 text-blue-100 uppercase tracking-widest drop-shadow-lg flex items-center gap-2">Skills <span className="text-cyan-400">⚡</span></h2>
-            <button onClick={() => setShowSkills(v => !v)} className="ml-0 sm:ml-4 px-3 sm:px-4 py-1 rounded-lg bg-blue-700/60 hover:bg-blue-500/80 text-white font-semibold shadow transition flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              {showSkills ? <FaChevronUp /> : <FaChevronDown />} {showSkills ? 'Hide' : 'Show'}
-            </button>
-          </div>
-          {showSkills && (
-            <div className="flex flex-wrap gap-6 justify-center">
-              {skillsList.map(skill => (
+              )}
+            </AnimatePresence>
+          </section>
+          {/* Work Experience Section */}
+          <section className="mb-16">
+            <motion.div
+              className="group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div
+                onClick={() => setShowWork(v => !v)}
+                className="flex items-center justify-between mb-8 p-6 bg-gradient-to-r from-cyan-900/50 via-slate-800/50 to-cyan-900/50 rounded-2xl backdrop-blur-sm border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-300 shadow-xl hover:shadow-cyan-500/20"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-xl shadow-lg">
+                    <FaBriefcase className="text-xl text-white" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                    Work Experience
+                  </h2>
+                </div>
                 <motion.div
-                  key={skill}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex flex-col items-center bg-gradient-to-br from-blue-900 via-gray-900 to-gray-800 rounded-xl p-5 shadow-lg hover:scale-110 transition-transform border-2 border-blue-700/30 group relative overflow-hidden"
+                  animate={{ rotate: showWork ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-lg"
                 >
-                  <span className="text-lg font-bold text-blue-200 drop-shadow group-hover:text-blue-400 transition-colors duration-200">
-                    {skill}
-                  </span>
-                  <span className="absolute -top-2 -right-2 w-8 h-8 bg-blue-700/20 rounded-full blur-lg z-0"></span>
-                  <span className="absolute -bottom-2 -left-2 w-8 h-8 bg-blue-400/10 rounded-full blur-lg z-0"></span>
+                  <FaChevronDown className="text-xl text-cyan-300" />
                 </motion.div>
-              ))}
-            </div>
-          )}
-        </section>
-        <section className="mb-12">
-          <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between mb-6 bg-gradient-to-r from-blue-900/60 via-transparent to-blue-900/60 rounded-t-xl px-2 sm:px-4 py-2 shadow-lg gap-2 sm:gap-0">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold border-b-2 border-cyan-400 pb-2 text-blue-100 uppercase tracking-widest drop-shadow-lg flex items-center gap-2">Certifications <span className="text-cyan-400">🎓</span></h2>
-            <button onClick={() => setShowCerts(v => !v)} className="ml-0 sm:ml-4 px-3 sm:px-4 py-1 rounded-lg bg-blue-700/60 hover:bg-blue-500/80 text-white font-semibold shadow transition flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-              {showCerts ? <FaChevronUp /> : <FaChevronDown />} {showCerts ? 'Hide' : 'Show'}
-            </button>
-          </div>
-          {showCerts && (
-            <div className="grid md:grid-cols-2 gap-6">
-              {certifications.map((cert, idx) => (
+              </div>
+            </motion.div>
+
+            <AnimatePresence>
+              {showWork && (
                 <motion.div
-                  key={cert.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.15, duration: 0.7 }}
-                  className="relative bg-gradient-to-br from-gray-900/80 to-blue-900/60 rounded-2xl shadow-xl p-6 border border-blue-700/30 overflow-hidden group hover:scale-[1.025] transition-transform"
+                  initial={{ opacity: 0, height: 0, y: -20 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="overflow-hidden space-y-6"
                 >
-                  <span className="absolute -top-4 -left-4 w-16 h-16 bg-blue-700/20 rounded-full blur-2xl z-0"></span>
-                  <span className="absolute -bottom-4 -right-4 w-16 h-16 bg-blue-400/10 rounded-full blur-2xl z-0"></span>
-                  <span className="absolute inset-0 bg-gradient-to-br from-blue-800/10 to-transparent rounded-2xl pointer-events-none z-0"></span>
-                  <div className="relative z-10 flex flex-col gap-2">
-                    <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-blue-200 hover:text-blue-400 underline underline-offset-4 transition-colors duration-200 drop-shadow-lg">
-                      {cert.name}
-                    </a>
-                    <span className="text-xs text-blue-300">Click to view certificate</span>
+                  {workExperience.map((exp, idx) => (
+                    <motion.div
+                      key={exp.title}
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.2, duration: 0.6 }}
+                      className="bg-gradient-to-br from-slate-900/80 via-cyan-900/30 to-slate-900/80 rounded-2xl p-8 backdrop-blur-sm border border-cyan-500/20 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 group"
+                      whileHover={{
+                        scale: 1.02,
+                        y: -5,
+                        boxShadow: "0 20px 40px rgba(6, 182, 212, 0.15)"
+                      }}
+                    >
+                      <div className="relative">
+                        <motion.div
+                          className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-xl"
+                          whileHover={{ scale: 1.2, opacity: 0.8 }}
+                        />
+                        <motion.div
+                          className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 relative z-10"
+                          whileHover={{ x: 5 }}
+                        >
+                          <h3 className="text-2xl font-bold text-white mb-2 md:mb-0 group-hover:text-cyan-300 transition-colors">
+                            {exp.title}
+                          </h3>
+                          <div className="flex flex-col md:items-end text-cyan-300">
+                            <motion.span
+                              className="font-semibold"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              {exp.duration}
+                            </motion.span>
+                            <span className="text-sm text-slate-400">{exp.location}</span>
+                          </div>
+                        </motion.div>
+                        <div className="space-y-3 relative z-10">
+                          {exp.details.map((detail, i) => (
+                            <motion.div
+                              key={i}
+                              className="flex items-start gap-3 text-slate-200"
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: (idx * 0.2) + (i * 0.1), duration: 0.4 }}
+                              whileHover={{ x: 5, scale: 1.01 }}
+                            >
+                              <motion.div
+                                className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mt-2 flex-shrink-0"
+                                whileHover={{ scale: 1.3 }}
+                              />
+                              <span className="leading-relaxed">{detail}</span>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </section>
+          {/* Projects Section */}
+          <section className="mb-16">
+            <motion.div
+              className="group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div
+                onClick={() => setShowProjects(v => !v)}
+                className="flex items-center justify-between mb-8 p-6 bg-gradient-to-r from-pink-900/50 via-slate-800/50 to-pink-900/50 rounded-2xl backdrop-blur-sm border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300 shadow-xl hover:shadow-pink-500/20"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-pink-500 to-pink-600 rounded-xl shadow-lg">
+                    <FaProjectDiagram className="text-xl text-white" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent">
+                    Projects
+                  </h2>
+                </div>
+                <motion.div
+                  animate={{ rotate: showProjects ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-gradient-to-r from-pink-500/20 to-cyan-500/20 rounded-lg"
+                >
+                  <FaChevronDown className="text-xl text-pink-300" />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <AnimatePresence>
+              {showProjects && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -20 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid lg:grid-cols-2 gap-8 mb-8">
+                    {projectDetails.map((project, idx) => (
+                      <motion.div
+                        key={project.title}
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ delay: idx * 0.1, duration: 0.6 }}
+                        className="group bg-gradient-to-br from-slate-900/90 via-purple-900/20 to-slate-900/90 rounded-2xl overflow-hidden backdrop-blur-sm border border-purple-500/20 hover:border-purple-500/40 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 hover:-translate-y-2"
+                      >
+                        <div className="relative h-64 bg-slate-800 overflow-hidden">
+                          {project.iframe ? (
+                            <iframe
+                              src={project.iframe}
+                              title={project.title}
+                              className="w-full h-full border-0"
+                              allow="fullscreen"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-500 bg-gradient-to-br from-slate-800 to-slate-900">
+                              <FaCode className="text-4xl" />
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+
+                        <div className="p-6 relative">
+                          <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-2xl"></div>
+                          <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors relative z-10">
+                            {project.title}
+                          </h3>
+                          <p className="text-slate-300 mb-4 leading-relaxed relative z-10">
+                            {project.description}
+                          </p>
+
+                          <div className="flex flex-wrap gap-2 mb-6 relative z-10">
+                            {project.tags && project.tags.slice(0, 4).map(tag => (
+                              <span key={tag} className="px-3 py-1 bg-gradient-to-r from-purple-600/80 to-pink-600/80 rounded-full text-xs font-medium text-white backdrop-blur-sm">
+                                {tag}
+                              </span>
+                            ))}
+                            {project.tags && project.tags.length > 4 && (
+                              <span className="px-3 py-1 bg-slate-700/80 rounded-full text-xs font-medium text-slate-300">
+                                +{project.tags.length - 4} more
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="flex gap-4 relative z-10">
+                            {project.github && (
+                              <motion.button
+                                onClick={() => handleLinkClick(project.github!, project.title)}
+                                disabled={loadingProjects.includes(project.title)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium shadow-lg transition-all duration-300 ${loadingProjects.includes(project.title)
+                                    ? 'bg-gradient-to-r from-slate-600 to-slate-500 cursor-not-allowed'
+                                    : 'bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 hover:shadow-slate-500/20 hover:scale-105 active:scale-95'
+                                  }`}
+                                whileHover={!loadingProjects.includes(project.title) ? { scale: 1.05, y: -2 } : {}}
+                                whileTap={!loadingProjects.includes(project.title) ? { scale: 0.95 } : {}}
+                              >
+                                {loadingProjects.includes(project.title) ? (
+                                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                ) : (
+                                  <FaGithub />
+                                )}
+                                <span>{loadingProjects.includes(project.title) ? 'Opening...' : 'Code'}</span>
+                              </motion.button>
+                            )}
+                            {project.demo && (
+                              <motion.button
+                                onClick={() => handleLinkClick(project.demo!, project.title)}
+                                disabled={loadingProjects.includes(project.title)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium shadow-lg transition-all duration-300 ${loadingProjects.includes(project.title)
+                                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 cursor-not-allowed'
+                                    : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 hover:shadow-purple-500/20 hover:scale-105 active:scale-95'
+                                  }`}
+                                whileHover={!loadingProjects.includes(project.title) ? { scale: 1.05, y: -2 } : {}}
+                                whileTap={!loadingProjects.includes(project.title) ? { scale: 0.95 } : {}}
+                              >
+                                {loadingProjects.includes(project.title) ? (
+                                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                ) : (
+                                  <FaExternalLinkAlt />
+                                )}
+                                <span>{loadingProjects.includes(project.title) ? 'Opening...' : 'Live Demo'}</span>
+                              </motion.button>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <motion.div
+                    className="bg-gradient-to-r from-slate-900/80 via-purple-900/40 to-slate-900/80 rounded-2xl p-6 backdrop-blur-sm border border-purple-500/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                  >
+                    <h3 className="text-lg font-semibold text-purple-300 mb-4 flex items-center gap-2">
+                      <FaCode className="text-sm" />
+                      Demo Credentials
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <motion.div
+                        className="group cursor-pointer"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => copyToClipboard('user@user.com', 'email')}
+                      >
+                        <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
+                          <div>
+                            <span className="text-purple-400 font-medium text-sm">Email:</span>
+                            <div className="font-mono text-white text-sm">user@user.com</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {copiedCredentials === 'email' ? (
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="text-green-400"
+                              >
+                                <FaCheck className="text-sm" />
+                              </motion.div>
+                            ) : (
+                              <FaCopy className="text-slate-400 group-hover:text-purple-400 text-sm transition-colors" />
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        className="group cursor-pointer"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => copyToClipboard('123456789', 'password')}
+                      >
+                        <div className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
+                          <div>
+                            <span className="text-purple-400 font-medium text-sm">Password:</span>
+                            <div className="font-mono text-white text-sm">123456789</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {copiedCredentials === 'password' ? (
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="text-green-400"
+                              >
+                                <FaCheck className="text-sm" />
+                              </motion.div>
+                            ) : (
+                              <FaCopy className="text-slate-400 group-hover:text-purple-400 text-sm transition-colors" />
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+                    <p className="text-slate-400 text-xs mt-3 text-center">
+                      Click to copy credentials to clipboard
+                    </p>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </section>
+          {/* Skills Section */}
+          <section className="mb-16">
+            <motion.div
+              className="group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div
+                onClick={() => setShowSkills(v => !v)}
+                className="flex items-center justify-between mb-8 p-6 bg-gradient-to-r from-emerald-900/50 via-slate-800/50 to-emerald-900/50 rounded-2xl backdrop-blur-sm border border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-300 shadow-xl hover:shadow-emerald-500/20"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl shadow-lg">
+                    <FaTools className="text-xl text-white" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                    Skills & Technologies
+                  </h2>
+                </div>
+                <motion.div
+                  animate={{ rotate: showSkills ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-lg"
+                >
+                  <FaChevronDown className="text-xl text-emerald-300" />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <AnimatePresence>
+              {showSkills && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -20 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {skillsList.map((skill, idx) => (
+                      <motion.div
+                        key={skill}
+                        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ delay: idx * 0.05, duration: 0.4 }}
+                        className="group bg-gradient-to-br from-slate-900/80 via-emerald-900/20 to-slate-900/80 rounded-xl p-4 backdrop-blur-sm border border-emerald-500/20 hover:border-emerald-500/40 shadow-lg hover:shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                        whileHover={{
+                          scale: 1.05,
+                          y: -5,
+                          boxShadow: "0 10px 25px rgba(16, 185, 129, 0.2)"
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <div className="relative text-center">
+                          <motion.div
+                            className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 rounded-full blur-xl group-hover:opacity-100 opacity-0 transition-opacity duration-300"
+                            whileHover={{ scale: 1.2, opacity: 1 }}
+                          />
+                          <motion.span
+                            className="text-sm font-semibold text-white group-hover:text-emerald-300 transition-colors relative z-10 block"
+                            whileHover={{ scale: 1.1 }}
+                          >
+                            {skill}
+                          </motion.span>
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            initial={{ scale: 0 }}
+                            whileHover={{ scale: 1 }}
+                          />
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 </motion.div>
-              ))}
-            </div>
-          )}
-        </section>
-      </main>
-      <footer className="text-center py-8 px-2 bg-gradient-to-r from-blue-900/90 via-cyan-900/80 to-blue-900/90 text-cyan-200 font-semibold tracking-wide shadow-inner border-t-2 border-cyan-400 mt-12 rounded-b-2xl relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <span className="absolute left-1/4 top-0 w-32 h-32 bg-cyan-400/10 rounded-full blur-2xl animate-pulse"></span>
-          <span className="absolute right-1/4 bottom-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl animate-pulse"></span>
-        </div>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 relative z-10">
-          <span className="text-lg sm:text-xl drop-shadow">&copy; {new Date().getFullYear()} <span className="font-bold text-cyan-400">Mostafa EL_FAR</span>. All rights reserved.</span>
-          <span className="hidden sm:inline-block text-cyan-400 text-2xl animate-bounce">🚀</span>
-        </div>
-      </footer>
+              )}
+            </AnimatePresence>
+          </section>
+          {/* Certifications Section */}
+          <section className="mb-16">
+            <motion.div
+              className="group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div
+                onClick={() => setShowCerts(v => !v)}
+                className="flex items-center justify-between mb-8 p-6 bg-gradient-to-r from-amber-900/50 via-slate-800/50 to-amber-900/50 rounded-2xl backdrop-blur-sm border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 shadow-xl hover:shadow-amber-500/20"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl shadow-lg">
+                    <FaCertificate className="text-xl text-white" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+                    Certifications
+                  </h2>
+                </div>
+                <motion.div
+                  animate={{ rotate: showCerts ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-lg"
+                >
+                  <FaChevronDown className="text-xl text-amber-300" />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <AnimatePresence>
+              {showCerts && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -20 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {certifications.map((cert, idx) => (
+                      <motion.div
+                        key={cert.name}
+                        initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.15, duration: 0.6 }}
+                        className="group bg-gradient-to-br from-slate-900/80 via-amber-900/20 to-slate-900/80 rounded-2xl p-6 backdrop-blur-sm border border-amber-500/20 hover:border-amber-500/40 shadow-xl hover:shadow-amber-500/20 transition-all duration-300 hover:-translate-y-1"
+                        whileHover={{
+                          scale: 1.02,
+                          y: -5,
+                          boxShadow: "0 20px 40px rgba(245, 158, 11, 0.15)"
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="relative">
+                          <motion.div
+                            className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-full blur-xl"
+                            whileHover={{ scale: 1.2, opacity: 0.8 }}
+                          />
+                          <motion.a
+                            href={cert.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block relative z-10"
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                          >
+                            <h3 className="text-lg font-bold text-white mb-3 group-hover:text-amber-300 transition-colors line-clamp-2">
+                              {cert.name}
+                            </h3>
+                            <motion.div
+                              className="flex items-center gap-2 text-amber-400 text-sm font-medium group-hover:text-amber-300 transition-colors"
+                              whileHover={{ x: 5 }}
+                            >
+                              <FaCertificate className="text-xs" />
+                              <span>View Certificate</span>
+                              <FaExternalLinkAlt className="text-xs opacity-60 group-hover:opacity-100 transition-opacity" />
+                            </motion.div>
+                          </motion.a>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </section>        </main>
+      </div>
+
+      {/* Scroll Progress Indicator */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 z-50 origin-left"
+        style={{ scaleX: scrollProgress / 100 }}
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: scrollProgress / 100 }}
+        transition={{ duration: 0.1 }}
+      />
+
+      {/* Floating Action Button */}
+      <AnimatePresence>
+        {scrollProgress > 20 && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-full shadow-xl hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 flex items-center justify-center text-white z-40 group"
+            initial={{ opacity: 0, scale: 0, y: 100 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0, y: 100 }}
+            whileHover={{ scale: 1.1, y: -5 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <FaChevronUp className="text-lg group-hover:text-cyan-200 transition-colors" />
+            </motion.div>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

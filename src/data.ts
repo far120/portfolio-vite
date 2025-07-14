@@ -149,3 +149,6 @@ export function getProjectByTitle(title: string) {
 export function getAllProjectDemos() {
   return projects.map(project => project.demo).filter(Boolean);
 }
+
+export const hireMeLink = "https://drive.google.com/file/d/1HAEIvb7V02OUOp1kgslRs8Y_Uy7QVTC3/view?usp=drive_link"; // Link to your resume or portfolio
+export const contactLink = "https://wa.me/201102453675"; // Replace with your WhatsApp number or contact link
