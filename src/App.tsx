@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Aside from "./Aside";
 import { useState, useEffect } from "react";
 import { userInfo } from "./userInfo";
+import Logo from "./components/Logo";
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
@@ -55,6 +56,70 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white font-sans">
+      {/* Floating Navigation Header */}
+      <AnimatePresence>
+        {scrollProgress > 5 && (
+          <motion.header
+            className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-slate-900/80 border-b border-purple-500/20"
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="max-w-6xl mx-auto px-4 py-3">
+              <div className="flex items-center justify-between">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Logo size="sm" showText={true} />
+                </motion.div>
+
+                <motion.nav
+                  className="hidden md:flex items-center gap-6"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {[
+                    { label: "About", onClick: () => setShowAbout(true) },
+                    { label: "Work", onClick: () => setShowWork(true) },
+                    { label: "Projects", onClick: () => setShowProjects(true) },
+                    { label: "Skills", onClick: () => setShowSkills(true) },
+                    { label: "Certificates", onClick: () => setShowCerts(true) },
+                  ].map((item, index) => (
+                    <motion.button
+                      key={item.label}
+                      onClick={item.onClick}
+                      className="text-slate-300 hover:text-cyan-400 transition-colors duration-300 text-sm font-medium"
+                      whileHover={{ y: -2, scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * index }}
+                    >
+                      {item.label}
+                    </motion.button>
+                  ))}
+                </motion.nav>
+
+                <motion.button
+                  onClick={scrollToTop}
+                  className="w-10 h-10 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-lg flex items-center justify-center text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <FaChevronUp className="text-sm" />
+                </motion.button>
+              </div>
+            </div>
+          </motion.header>
+        )}
+      </AnimatePresence>
+
       {/* Hero Section */}
       <Aside />
 
@@ -600,13 +665,14 @@ function App() {
               viewport={{ once: true }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">{userInfo.name.split(' ').map(n => n[0]).join('')}</span>
-                </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  {userInfo.name}
-                </h3>
+                <Logo size="md" showText={true} />
               </div>
+              <motion.h3
+                className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent mb-4"
+                whileHover={{ scale: 1.02 }}
+              >
+                {userInfo.name}
+              </motion.h3>
               <p className="text-slate-300 leading-relaxed mb-6">
                 {userInfo.title} passionate about creating exceptional web experiences.
                 Let's build something amazing together using modern technologies and innovative solutions.
