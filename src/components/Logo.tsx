@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { userInfo } from "../userInfo";
 
 interface LogoProps {
     size?: "sm" | "md" | "lg";
@@ -50,8 +51,7 @@ const Logo = ({ size = "md", showText = true, className = "" }: LogoProps) => {
 
                 {/* Logo Image */}
                 <motion.img
-                    // src="/ChatGPT Image Jul 3, 2025, 11_50_39 AM.png"
-                    src="https://drive.google.com/file/d/1I98uXjfRD1MdzIZ81iGwgCjtf8X_XtBe/view?usp=drive_link"
+                    src="./ChatGPT Image Jul 3, 2025, 11_50_39 AM.png"
                     alt="ELFAR Logo"
                     className={`${sizeClasses[size]} w-auto object-contain relative z-10 filter brightness-110`}
                     whileHover={{
