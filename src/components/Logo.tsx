@@ -51,7 +51,7 @@ const Logo = ({ size = "md", showText = true, className = "" }: LogoProps) => {
                 {/* Logo Image */}
                 <motion.img
                     // src="/ChatGPT Image Jul 3, 2025, 11_50_39 AM.png"
-                    src="https://github.com/far120/portfolio-vite/blob/master/public/ChatGPT%20Image%20Jul%203%2C%202025%2C%2011_50_39%20AM.png"
+                    src="https://drive.google.com/file/d/1I98uXjfRD1MdzIZ81iGwgCjtf8X_XtBe/view?usp=drive_link"
                     alt="ELFAR Logo"
                     className={`${sizeClasses[size]} w-auto object-contain relative z-10 filter brightness-110`}
                     whileHover={{
