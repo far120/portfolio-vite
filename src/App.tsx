@@ -1,17 +1,10 @@
 import { projects, skills, aboutMe, workExperience, certifications, skillsList, projectDetails } from "./data";
-import { FaGithub, FaCode, FaChevronDown, FaChevronUp, FaUser, FaBriefcase, FaProjectDiagram, FaCertificate, FaTools, FaExternalLinkAlt, FaCopy, FaCheck } from "react-icons/fa";
-import * as FaIcons from "react-icons/fa";
-import * as SiIcons from "react-icons/si";
-import type { IconType } from 'react-icons';
+import { FaGithub, FaCode, FaChevronDown, FaChevronUp, FaUser, FaBriefcase, FaProjectDiagram, FaCertificate, FaTools, FaExternalLinkAlt, FaCopy, FaCheck, FaHeart, FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+
 import { motion, AnimatePresence } from "framer-motion";
 import Aside from "./Aside";
 import { useState, useEffect } from "react";
-
-// Helper to get icon by name safely
-function getIconByName(name: string): IconType {
-  // This function is used in the skills.map below
-  return (FaIcons as Record<string, IconType>)[name] || (SiIcons as Record<string, IconType>)[name] || FaCode;
-}
+import { userInfo } from "./userInfo";
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
@@ -315,8 +308,8 @@ function App() {
                                 onClick={() => handleLinkClick(project.github!, project.title)}
                                 disabled={loadingProjects.includes(project.title)}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium shadow-lg transition-all duration-300 ${loadingProjects.includes(project.title)
-                                    ? 'bg-gradient-to-r from-slate-600 to-slate-500 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 hover:shadow-slate-500/20 hover:scale-105 active:scale-95'
+                                  ? 'bg-gradient-to-r from-slate-600 to-slate-500 cursor-not-allowed'
+                                  : 'bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 hover:shadow-slate-500/20 hover:scale-105 active:scale-95'
                                   }`}
                                 whileHover={!loadingProjects.includes(project.title) ? { scale: 1.05, y: -2 } : {}}
                                 whileTap={!loadingProjects.includes(project.title) ? { scale: 0.95 } : {}}
@@ -334,8 +327,8 @@ function App() {
                                 onClick={() => handleLinkClick(project.demo!, project.title)}
                                 disabled={loadingProjects.includes(project.title)}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium shadow-lg transition-all duration-300 ${loadingProjects.includes(project.title)
-                                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 hover:shadow-purple-500/20 hover:scale-105 active:scale-95'
+                                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 cursor-not-allowed'
+                                  : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 hover:shadow-purple-500/20 hover:scale-105 active:scale-95'
                                   }`}
                                 whileHover={!loadingProjects.includes(project.title) ? { scale: 1.05, y: -2 } : {}}
                                 whileTap={!loadingProjects.includes(project.title) ? { scale: 0.95 } : {}}
@@ -591,6 +584,172 @@ function App() {
             </AnimatePresence>
           </section>        </main>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 border-t border-purple-500/20">
+        <div className="max-w-6xl mx-auto px-4 py-16">
+          {/* Main Footer Content */}
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8 mb-12">
+
+            {/* About Section */}
+            <motion.div
+              className="lg:col-span-2"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">{userInfo.name.split(' ').map(n => n[0]).join('')}</span>
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  {userInfo.name}
+                </h3>
+              </div>
+              <p className="text-slate-300 leading-relaxed mb-6">
+                {userInfo.title} passionate about creating exceptional web experiences.
+                Let's build something amazing together using modern technologies and innovative solutions.
+              </p>
+              <div className="flex gap-4">
+                {[
+                  { href: userInfo.socialLinks.github, icon: FaGithub, color: "hover:text-slate-300", bg: "hover:bg-slate-700/20" },
+                  { href: userInfo.socialLinks.linkedin, icon: FaLinkedin, color: "hover:text-blue-400", bg: "hover:bg-blue-400/20" },
+                  { href: userInfo.socialLinks.facebook, icon: FaFacebook, color: "hover:text-blue-500", bg: "hover:bg-blue-500/20" },
+                  { href: userInfo.socialLinks.instagram, icon: FaInstagram, color: "hover:text-pink-500", bg: "hover:bg-pink-500/20" },
+                  { href: userInfo.socialLinks.whatsapp, icon: FaWhatsapp, color: "hover:text-green-500", bg: "hover:bg-green-500/20" },
+                ].map(({ href, icon: Icon, color, bg }, index) => (
+                  <motion.a
+                    key={index}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-12 h-12 border border-slate-600 rounded-xl flex items-center justify-center text-slate-400 ${color} ${bg} transition-all duration-300 hover:scale-110 backdrop-blur-sm`}
+                    whileHover={{ y: -3, scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Icon className="text-lg" />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Quick Links */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
+              <ul className="space-y-3">
+                {[
+                  { label: "About Me", onClick: () => setShowAbout(true) },
+                  { label: "Projects", onClick: () => setShowProjects(true) },
+                  { label: "Skills", onClick: () => setShowSkills(true) },
+                  { label: "Experience", onClick: () => setShowWork(true) },
+                  { label: "Certificates", onClick: () => setShowCerts(true) },
+                ].map((link, index) => (
+                  <motion.li key={index}>
+                    <motion.button
+                      onClick={link.onClick}
+                      className="text-slate-400 hover:text-cyan-400 transition-colors duration-300 text-left"
+                      whileHover={{ x: 5 }}
+                    >
+                      {link.label}
+                    </motion.button>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-lg font-semibold text-white mb-4">Get In Touch</h4>
+              <div className="space-y-4">
+                <motion.a
+                  href={`mailto:${userInfo.email}`}
+                  className="flex items-center gap-3 text-slate-400 hover:text-cyan-400 transition-colors duration-300 group"
+                  whileHover={{ x: 5 }}
+                >
+                  <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors">
+                    <FaEnvelope className="text-sm" />
+                  </div>
+                  <span className="text-sm">{userInfo.email}</span>
+                </motion.a>
+
+                <motion.a
+                  href={`tel:${userInfo.phone}`}
+                  className="flex items-center gap-3 text-slate-400 hover:text-green-400 transition-colors duration-300 group"
+                  whileHover={{ x: 5 }}
+                >
+                  <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                    <FaPhone className="text-sm" />
+                  </div>
+                  <span className="text-sm">{userInfo.phone}</span>
+                </motion.a>
+
+                <motion.div
+                  className="flex items-center gap-3 text-slate-400"
+                  whileHover={{ x: 5 }}
+                >
+                  <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center">
+                    <FaMapMarkerAlt className="text-sm" />
+                  </div>
+                  <span className="text-sm">{userInfo.location}, Egypt</span>
+                </motion.div>
+              </div>
+            </motion.div>
+
+          </div>
+
+          {/* Bottom Footer */}
+          <motion.div
+            className="border-t border-slate-800 pt-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <motion.p
+                className="text-slate-400 text-sm flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+              >
+                <span>© {new Date().getFullYear()} {userInfo.name}. Made with</span>
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <FaHeart className="text-red-500" />
+                </motion.span>
+                <span>using React & TypeScript</span>
+              </motion.p>
+
+              <motion.button
+                onClick={scrollToTop}
+                className="flex items-center gap-2 text-slate-400 hover:text-purple-400 transition-colors duration-300 text-sm"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>Back to top</span>
+                <FaChevronUp className="text-xs" />
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
+        </div>
+      </footer>
 
       {/* Scroll Progress Indicator */}
       <motion.div
