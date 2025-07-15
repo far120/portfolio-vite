@@ -1,5 +1,5 @@
-import { projects, skills, aboutMe, workExperience, certifications, skillsList, projectDetails } from "./data";
-import { FaGithub, FaCode, FaChevronDown, FaChevronUp, FaUser, FaBriefcase, FaProjectDiagram, FaCertificate, FaTools, FaExternalLinkAlt, FaCopy, FaCheck, FaHeart, FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { projects, skills, aboutMe, workExperience, certifications, skillsList, projectDetails, courses, services } from "./data";
+import { FaGithub, FaCode, FaChevronDown, FaChevronUp, FaUser, FaBriefcase, FaProjectDiagram, FaCertificate, FaTools, FaExternalLinkAlt, FaCopy, FaCheck, FaHeart, FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaFacebook, FaInstagram, FaWhatsapp, FaGraduationCap, FaCogs } from "react-icons/fa";
 
 import { motion, AnimatePresence } from "framer-motion";
 import Aside from "./Aside";
@@ -13,6 +13,8 @@ function App() {
   const [showProjects, setShowProjects] = useState(false);
   const [showSkills, setShowSkills] = useState(false);
   const [showCerts, setShowCerts] = useState(false);
+  const [showCourses, setShowCourses] = useState(false);
+  const [showServices, setShowServices] = useState(false);
   const [copiedCredentials, setCopiedCredentials] = useState<'email' | 'password' | null>(null);
   const [loadingProjects, setLoadingProjects] = useState<string[]>([]);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -86,6 +88,8 @@ function App() {
                     { label: "Work", onClick: () => setShowWork(true) },
                     { label: "Projects", onClick: () => setShowProjects(true) },
                     { label: "Skills", onClick: () => setShowSkills(true) },
+                    { label: "Courses", onClick: () => setShowCourses(true) },
+                    { label: "Services", onClick: () => setShowServices(true) },
                     { label: "Certificates", onClick: () => setShowCerts(true) },
                   ].map((item, index) => (
                     <motion.button
@@ -562,6 +566,190 @@ function App() {
               )}
             </AnimatePresence>
           </section>
+        
+          {/* Courses Section */}
+          <section className="mb-16">
+            <motion.div
+              className="group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div
+                onClick={() => setShowCourses(v => !v)}
+                className="flex items-center justify-between mb-8 p-6 bg-gradient-to-r from-indigo-900/50 via-slate-800/50 to-indigo-900/50 rounded-2xl backdrop-blur-sm border border-indigo-500/20 hover:border-indigo-500/40 transition-all duration-300 shadow-xl hover:shadow-indigo-500/20"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl shadow-lg">
+                    <FaGraduationCap className="text-xl text-white" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                    Courses & Training
+                  </h2>
+                </div>
+                <motion.div
+                  animate={{ rotate: showCourses ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-lg"
+                >
+                  <FaChevronDown className="text-xl text-indigo-300" />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <AnimatePresence>
+              {showCourses && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -20 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {courses.map((course, idx) => (
+                      <motion.div
+                        key={course.title}
+                        initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.15, duration: 0.6 }}
+                        className="group bg-gradient-to-br from-slate-900/80 via-indigo-900/20 to-slate-900/80 rounded-2xl p-6 backdrop-blur-sm border border-indigo-500/20 hover:border-indigo-500/40 shadow-xl hover:shadow-indigo-500/20 transition-all duration-300 hover:-translate-y-1"
+                        whileHover={{
+                          scale: 1.02,
+                          y: -5,
+                          boxShadow: "0 20px 40px rgba(99, 102, 241, 0.15)"
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="relative">
+                          <motion.div
+                            className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-full blur-xl"
+                            whileHover={{ scale: 1.2, opacity: 0.8 }}
+                          />
+                          <motion.a
+                            href={course.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block relative z-10"
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                          >
+                            <h3 className="text-lg font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors line-clamp-2">
+                              {course.title}
+                            </h3>
+                            <p className="text-slate-300 mb-4 leading-relaxed text-sm">
+                              {course.description}
+                            </p>
+                            <motion.div
+                              className="flex items-center gap-2 text-indigo-400 text-sm font-medium group-hover:text-indigo-300 transition-colors"
+                              whileHover={{ x: 5 }}
+                            >
+                              <FaGraduationCap className="text-xs" />
+                              <span>View Course</span>
+                              <FaExternalLinkAlt className="text-xs opacity-60 group-hover:opacity-100 transition-opacity" />
+                            </motion.div>
+                          </motion.a>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </section>  
+
+          {/* Services Section */}
+          <section className="mb-16">
+            <motion.div
+              className="group cursor-pointer"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div
+                onClick={() => setShowServices(v => !v)}
+                className="flex items-center justify-between mb-8 p-6 bg-gradient-to-r from-purple-900/50 via-slate-800/50 to-purple-900/50 rounded-2xl backdrop-blur-sm border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 shadow-xl hover:shadow-purple-500/20"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl shadow-lg">
+                    <FaCogs className="text-xl text-white" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Services
+                  </h2>
+                </div>
+                <motion.div
+                  animate={{ rotate: showServices ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg"
+                >
+                  <FaChevronDown className="text-xl text-purple-300" />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <AnimatePresence>
+              {showServices && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -20 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {services.map((service, idx) => (
+                      <motion.div
+                        key={service.title}
+                        initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.15, duration: 0.6 }}
+                        className="group bg-gradient-to-br from-slate-900/80 via-purple-900/20 to-slate-900/80 rounded-2xl p-6 backdrop-blur-sm border border-purple-500/20 hover:border-purple-500/40 shadow-xl hover:shadow-purple-500/20 transition-all duration-300 hover:-translate-y-1"
+                        whileHover={{
+                          scale: 1.02,
+                          y: -5,
+                          boxShadow: "0 20px 40px rgba(147, 51, 234, 0.15)"
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="relative">
+                          <motion.div
+                            className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-xl"
+                            whileHover={{ scale: 1.2, opacity: 0.8 }}
+                          />
+                          <div className="relative z-10">
+                            <div className="flex items-start justify-between mb-4">
+                              <div className="flex items-center gap-3">
+                                <div className="p-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg">
+                                  <service.icon className="text-lg text-purple-400" />
+                                </div>
+                                <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
+                                  {service.title}
+                                </h3>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-xs text-slate-400 mb-1">Starting from</p>
+                                <p className="text-xl font-bold text-purple-400">${service.price}</p>
+                              </div>
+                            </div>
+                            <p className="text-slate-300 mb-4 leading-relaxed text-sm">
+                              {service.description}
+                            </p>
+                            <motion.div
+                              className="flex items-center gap-2 text-purple-400 text-sm font-medium group-hover:text-purple-300 transition-colors"
+                              whileHover={{ x: 5 }}
+                            >
+                              <FaCode className="text-xs" />
+                              <span>Get Started</span>
+                            </motion.div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </section>
+        
           {/* Certifications Section */}
           <section className="mb-16">
             <motion.div
@@ -647,8 +835,11 @@ function App() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </section>        </main>
+          </section>
+
+        </main>
       </div>
+      
 
       {/* Footer */}
       <footer className="bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 border-t border-purple-500/20">
@@ -715,6 +906,8 @@ function App() {
                   { label: "Skills", onClick: () => setShowSkills(true) },
                   { label: "Experience", onClick: () => setShowWork(true) },
                   { label: "Certificates", onClick: () => setShowCerts(true) },
+                  { label: "Courses", onClick: () => setShowCourses(true) },
+                  { label: "Services", onClick: () => setShowServices(true) },
                 ].map((link, index) => (
                   <motion.li key={index}>
                     <motion.button

@@ -140,6 +140,59 @@ export const projectDetails = projects.map(project => ({
   tags: project.tags
 }));
 
+export const courses = [
+  {
+    title: "HUAWEI TRAINING COURSE OF ARTIFICIAL INTELLIGENCE",
+    description: "A comprehensive course on artificial intelligence concepts and applications.",
+    link: "https://drive.google.com/file/d/18UEMYdy5Y7cfCfz8GYdCGy49pyxyf7X1/view?usp=sharing"
+  },
+  {
+    title: "HUAWEI TALENT ONLINE",
+    description: "An online platform offering various courses and resources for skill development.",
+    link: "https://drive.google.com/file/d/1wYayVb4NfltGgzoM6l4CNerbXZ2UQ2nF/view?usp=sharing"
+  },
+  {
+    title: "NEW HORIZONS",
+    description: "A global leader in IT training and certification.",
+    link: "https://drive.google.com/file/d/1W4PYk6iLNOxyyQvMDgQyK50JNIzBTpfJ/view?usp=sharing"
+  },
+  {
+    title: "Introduction to Front-End Development",
+    description: "A beginner-friendly course on front-end development using HTML, CSS, and JavaScript.",
+    link: "https://coursera.org/share/6795dd924b6803fc0026e3dd04b28538"
+  },
+  {
+    title: "Introduction to Back-End Development",
+    description: "A comprehensive course on back-end development using Node.js and Express.",
+    link: "https://coursera.org/share/6701eba45b7d71f0c147767121da7ccd"
+  },
+  {
+    title: "Front-End Development with MERN Specialization by DPEI",
+    description: "A specialization program focusing on front-end development using the MERN stack.",
+    link: "https://www.coursera.org/learn/front-end-development"
+  },
+  {
+    title: "Front-End Development with MERN Specialization by NTI",
+    description: "A specialization program focusing on front-end development using the MERN stack.",
+    link: "https://www.coursera.org/learn/front-end-development"
+  }
+];
+
+export const services = [
+  {
+    title: "E-commerce Development",
+    description: "Building responsive and modern e-commerce applications using the latest technologies.",
+    icon: "FaCode",
+    price: "5",
+  },
+  {
+    title: "Portfolio Development",
+    description: "Creating dynamic and interactive web applications tailored to client needs.",
+    icon: "FaBriefcase",
+    price: "5",
+  },
+];
+
 // Utility function to get a project by title
 export function getProjectByTitle(title: string) {
   return projects.find(project => project.title === title);
